@@ -6,13 +6,37 @@ output:
   html_document:
     df_print: paged
 bibliography: references.bib
+csl: apa.csl
 ---
+
+```{r setup, echo=FALSE}
+# set working directory
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file()) #direct where root project file is, knitr:optsknit is how we set global options, root directory is the project file
+
+#set global options
+knitr::opts_chunk$set(results=FALSE, eval = TRUE, echo= FALSE, warning= FALSE, message=FALSE) #these options willbe applied in all code chunks, you can override it though if you need to
+```
+
+```{r load-libraries-data}
+#libraries
+library(tidyverse)
+library(patchwork)
+library(BayesFactor)
+
+#load
+df <- read.csv("output/data/preprocessed-GARP-TSST-data.csv", 
+               encoding = "UTF-8")
+
+bronars_simulation_data <- read.csv("data/bronars_simulation_data.csv")
+```
 
 Citation to original version of this data article:
 
 Nitsch, F. J., Sellitto, M., & Kalenscher, T. (2021). Trier social stress test and food-choice: Behavioral, self-report & hormonal data. *Data in brief*, *37*, 107245. <https://doi.org/10.1016/j.dib.2021.107245>
 
 **Abstract**
+
+[@kirschbaum2007]
 
 A sample of 144 participants underwent the Trier Social Stress Test (TSST), a psychosocial stress manipulation involving a mock interview and a mental arithmetic task, or a matched control procedure. Physiological stress was estimated via a collection of 7 saliva samples over the course of the experiment analysed for cortisol and alpha-amylase, as well as via the mean heart-rate measured before and during the experimental manipulation. Subjective stress was assessed via the Positive and Negative Affect Scale as well as four Visual Analogue Scales at 6 points over the time course of the experiment. Participants solved an incentive-compatible food-choice task before, immediately after and in the aftermath of the experimental manipulation. In each trial of the food-choice task, participants had to choose one out of a set of two to seven snack bundles. Each snack bundle consisted of specific amounts of a sweet or salty snack and a fruit or vegetable. The snacks for both categories were selected to be similarly attractive according to the previously provided online ratings of the participants. The design of the food-choice task allows for the calculation of revealed preference consistency indices. The dataset further contains several self-report questionnaires administered to the participants before the experimental session, including the Trier Inventory of Chronic Stress.
 
@@ -153,12 +177,12 @@ We collected saliva samples with Salivette devices (Sarstedt, Germany) that cons
 
 ## Preview of Research Results
 
-```{r fig3-heartrate, results=FALSE, eval = TRUE, echo= FALSE, warning= FALSE, message=FALSE, fig.cap= Fig 3: Mean heart rate of stress and control groups at baseline and during intervention.}
+```{r fig3-heartrate, results=FALSE, eval = TRUE, echo= FALSE, warning= FALSE, message=FALSE, fig.cap= "Fig 3: Mean heart rate of stress and control groups at baseline and during intervention."}
 library(tidyverse)
 library(BayesFactor)
 
 #Read data
-df <- read.csv("../../output/data/preprocessed-GARP-TSST-data.csv", 
+df <- read.csv("output/data/preprocessed-GARP-TSST-data.csv", 
                encoding = "UTF-8")
 
 #Convert df to long-format
@@ -210,6 +234,14 @@ plot
 ```
 
 FIXME add Fig 4: Cortisol and Amylase levels in stress and control groups
+
+```{r}
+#run our code from code directory
+source("code/02_hormone_analysis.R", local=knitr::knit_global()) #second arg makes sure its sourcing it from the right place
+
+#display
+plot
+```
 
 All analyses were conducted in R[^1] in the RStudio IDE[^2] using the packages Tidyverse (**add citation here**), stringi[^3], BayesFactor[^4] and patchwork[^5].
 
